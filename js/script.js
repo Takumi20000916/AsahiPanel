@@ -2,58 +2,33 @@ import { ObjectDetector, FilesetResolver } from "./vision_bundle.js";
 var objectDetector;
 let runningMode = "IMAGE";
 
-// モデルの切り替えを行う関数
-let modelSwitching = false;
-
-async function switchModel(modelPath) {
-    modelSwitching = true;  // モデル切り替え中フラグを設定
-    console.log("Switching model to:", modelPath);
-    try {
-        // モデルの準備
-        const vision = await FilesetResolver.forVisionTasks("./wasm");
-        // 新しい物体検出器を作成
-        const newObjectDetector = await ObjectDetector.createFromOptions(vision, {
-            baseOptions: {
-                modelAssetPath: modelPath,
-                delegate: "GPU"
-            },
-            scoreThreshold: 0.35,
-            runningMode: runningMode
-        });
-        // 古い物体検出器をnullに設定し、新しい物体検出器に置き換える
-        if (objectDetector) {
-            objectDetector = null;
-        }
-        objectDetector = newObjectDetector;
-        currentModel = modelPath;  // 現在のモデルを更新
-        console.log("Model switched successfully to:", modelPath);
-    } catch (error) {
-        console.error("Failed to switch model:", error);
-    } finally {
-        modelSwitching = false;  // モデル切り替え中フラグをリセット
-    }
-}
-
 // 初期化関数
 const initializeObjectDetector = async () => {
-    await switchModel('./models/hanyou.tflite');
-     // カメラを有効にする
-     enableCam();
-     // ローディングインジケーターを非表示にする
-     document.querySelector('#loading').style.display = 'none';
+    // モデルを読み込む
+    const vision = await FilesetResolver.forVisionTasks("./wasm");
+    objectDetector = await ObjectDetector.createFromOptions(vision, {
+        baseOptions: {
+            modelAssetPath: './models/hanyou.tflite', // 使用するモデルを指定
+            delegate: "GPU"
+        },
+        scoreThreshold: 0.35,
+        runningMode: runningMode
+    });
+    console.log("Object detector initialized with model: hanyou.tflite");
+
+    // カメラを有効にする
+    enableCam();
+    // ローディングインジケーターを非表示にする
+    document.querySelector('#loading').style.display = 'none';
 };
 
 // ページロード時に初期化関数を呼び出す
-// window.addEventListener("load", () => {
-//     initializeObjectDetector();
-// });
 initializeObjectDetector();
 
 /********************************************************************
-// Demo 2: Continuously grab image from webcam stream and detect it.
+// Continuously grab image from webcam stream and detect it.
 ********************************************************************/
 let video = document.getElementById("webcam");
-let enableWebcamButton;
 
 function hasGetUserMedia() {
     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
@@ -70,7 +45,7 @@ async function enableCam(event) {
     // localStorageに保存されたcameraIdがあれば、それを使用
     const cameraId = localStorage.getItem('cameraId');
 
-    // カメラの制約を設定//ここでカメラのオプション
+    // カメラの制約を設定
     const constraints = {
         video: {
             deviceId: cameraId,
@@ -78,23 +53,16 @@ async function enableCam(event) {
             width: { max: 1280 },
             height: { max: 720 },
             aspectRatio: { ideal: 1.0 },
-            frameRate: { ideal: 3, max: 3 }// フレームレートを最大15fpsに制限
+            frameRate: { ideal: 3, max: 3 } // フレームレートを最大3fpsに制限
         }
     };
 
-
-      // ウェブカムストリームを有効にする
+    // ウェブカムストリームを有効にする
     navigator.mediaDevices
         .getUserMedia(constraints)
         .then(function (stream) {
             video.srcObject = stream;
             window.currentStream = stream;
-
-            // ストリームの詳細情報を取得
-            let videoTrack = stream.getVideoTracks()[0];
-            let settings = videoTrack.getSettings();
-            let capabilities = videoTrack.getCapabilities();
-
 
             video.addEventListener("loadeddata", predictWebcam);
         })
@@ -102,7 +70,6 @@ async function enableCam(event) {
             console.error(err);
         });
 }
-
 
 let detectionInterval = 800; // ミリ秒単位の検出間隔
 let lastDetectionTime = 0;
@@ -122,21 +89,15 @@ async function predictWebcam() {
         }
 
         const detections = await objectDetector.detectForVideo(video, now);
-        console.log("Detections:", detections); // デバッグ用
+        // console.log("Detections:", detections); // デバッグ用
 
         gotDetections(detections);
-        handleGestures();
+        // handleGestures(); // ジェスチャー関連のコードを使用しない場合はコメントアウト
     } catch (error) {
         console.error("Error in predictWebcam:", error);
     }
     window.requestAnimationFrame(predictWebcam);
 }
-
-
-
-
-
-
 
 // 信頼度のしきい値を変更するイベントリスナー
 document.querySelector('#input_confidence_threshold').addEventListener('change', changedConfidenceThreshold);
@@ -164,7 +125,7 @@ async function listCameras() {
                         const option = document.createElement('option');
                         option.text = device.label || `camera ${selectCamera.length + 1}`;
                         option.value = device.deviceId;
-                        
+
                         // localStorageに保存されたcameraIdがあれば、それを選択状態にする
                         const cameraId = localStorage.getItem('cameraId');
                         if (cameraId === device.deviceId) {
@@ -194,7 +155,7 @@ document.querySelector('#button_refresh_camera').addEventListener('click', async
     } catch (err) {
         console.error('メディアデバイスへのアクセス中にエラーが発生しました。', err);
     }
-})
+});
 
 // カメラ選択が変更された時のイベントリスナー
 document.getElementById('select_camera').addEventListener('change', changedCamera);
@@ -207,7 +168,7 @@ function changedCamera() {
             width: { max: 1280 },
             height: { max: 720 },
             aspectRatio: { ideal: 1.0 },
-            frameRate: { ideal: 3, max: 3 }// フレームレートを最大5fpsに制限
+            frameRate: { ideal: 3, max: 3 } // フレームレートを最大3fpsに制限
         }
     };
 
@@ -223,63 +184,6 @@ function changedCamera() {
         .catch((err) => {
             console.error(err);
         });
-}
-
-
-let currentModel = './models/hanyou.tflite'; // 現在のモデル
-let gestureCounters = {}; // ジェスチャごとのカウントを記録するオブジェクト
-const gestureThreshold = 1; // 切り替えに必要な認識フレーム数
-
-function handleGestures() {
-    if (gestures_results) {
-        gestures_results.gestures.forEach((gestureData) => {
-            const gestureName = gestureData[0].categoryName;
-
-            // カウンタの初期化
-            if (!gestureCounters[gestureName]) {
-                gestureCounters[gestureName] = 0;
-            }
-
-            // 現在のジェスチャをカウントアップ
-            gestureCounters[gestureName]++;
-
-            // 他のジェスチャのカウンタをリセット
-            Object.keys(gestureCounters).forEach((key) => {
-                if (key !== gestureName) {
-                    gestureCounters[key] = 0;
-                }
-            });
-
-            // **カウントをコンソールに表示**
-            console.log(`Gesture: ${gestureName}, Count: ${gestureCounters[gestureName]}`);
-
-            // 120フレーム連続認識された場合、モデルを切り替え
-            if (gestureCounters[gestureName] >= gestureThreshold) {
-                switchModelByGesture(gestureName);
-                gestureCounters[gestureName] = 0; // カウンタをリセット
-            }
-        });
-    }
-}
-
-function switchModelByGesture(gestureName) {
-    if (gestureName === "Pointing_Up" && currentModel !== './models/hanyou.tflite') {
-        console.log(`Gesture: ${gestureName} detected. Switching model to hanyou.`);
-        currentModel = './models/hanyou.tflite';
-        switchModel(currentModel);
-    } else if (gestureName === "Victory" && currentModel !== './models/mickey.tflite') {
-        console.log(`Gesture: ${gestureName} detected. Switching model to mickey.`);
-        currentModel = './models/mickey.tflite';
-        switchModel(currentModel);
-    } else if (gestureName === "THREE" && currentModel !== './models/tempereture.tflite') {
-        console.log(`Gesture: ${gestureName} detected. Switching model to tempereture.`);
-        currentModel = './models/tempereture.tflite';
-        switchModel(currentModel);
-    } else if (gestureName === "FOUR" && currentModel !== './models/container3.tflite') {
-        console.log(`Gesture: ${gestureName} detected. Switching model to container3.`);
-        currentModel = './models/container3.tflite';
-        switchModel(currentModel);
-    }
 }
 
 // ビデオ表示を制御するフラグ

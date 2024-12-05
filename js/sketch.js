@@ -126,45 +126,64 @@ function draw() {
     }
 
     // 物体検出結果の描画と読み上げ
-    if (pointing && object_results && object_results.detections) {
-        strokeWeight(2);
+if (pointing && object_results && object_results.detections) {
+    strokeWeight(2);
 
-        for (let detection of object_results.detections) {
-            let bb = detection.boundingBox;
-            let name = detection.categories[0].categoryName;
-            let score = detection.categories[0].score;
+    for (let detection of object_results.detections) {
+        let bb = detection.boundingBox;
+        let name = detection.categories[0].categoryName;
+        let score = detection.categories[0].score;
 
-            // 人差し指より上にある物体のみを描画
-            if (bb.originX < Pointing_x && bb.originX + bb.width > Pointing_x && bb.originY + bb.height < Pointing_y) {
-                stroke(250, 230, 140);
-                noFill();
-                rect(bb.originX, bb.originY, bb.width, bb.height);
+        // 人差し指より上にある物体のみを描画
+        if (bb.originX < Pointing_x && bb.originX + bb.width > Pointing_x && bb.originY + bb.height < Pointing_y) {
+            stroke(250, 230, 140);
+            noFill();
+            rect(bb.originX, bb.originY, bb.width, bb.height);
 
-                noStroke();
-                fill(255);
-                textSize(15);
-                textAlign(LEFT, CENTER);
-                text(`${name} (${score.toFixed(2)})`, bb.originX + 5, bb.originY - 10);
+            noStroke();
+            fill(255);
+            textSize(15);
+            textAlign(LEFT, CENTER);
+            text(`${name} (${score.toFixed(2)})`, bb.originX + 5, bb.originY - 10);
 
-                // 一定間隔で名前を読み上げる
-                let currentTime = millis();
-                if (name === lastSpokenName) {
-                    if (currentTime - lastSpeakTime > SPEAK_INTERVAL) {
-                        speakText(name + "です");
-                        lastSpeakTime = currentTime;
-                    }
+            // 一定間隔で名前を読み上げる（ここを修正）
+            let currentTime = millis();
+            let textToSpeak = null;
+
+            if (name === 'bottle') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'ゆい';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'うんこで';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = 'くさんごよー';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = 'よー';
                 } else {
-                    speakText(name + "です");
-                    lastSpokenName = name;
+                    textToSpeak = name;
+                }
+            } else {
+                textToSpeak = name;
+            }
+
+            if (textToSpeak === lastSpokenName) {
+                if (currentTime - lastSpeakTime > SPEAK_INTERVAL) {
+                    speakText(textToSpeak + "。");
                     lastSpeakTime = currentTime;
                 }
-
-                break;
+            } else {
+                speakText(textToSpeak + "。");
+                lastSpokenName = textToSpeak;
+                lastSpeakTime = currentTime;
             }
+
+            break;
         }
-    } else {
-        lastSpokenName = null; // 指を指していない場合はリセット
     }
+} else {
+    lastSpokenName = null; // 指を指していない場合はリセット
+}
+
 
     // **ここから追加**
     // 検出されたジェスチャー名を画面中央に描画
