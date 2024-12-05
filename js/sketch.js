@@ -156,13 +156,27 @@ if (pointing && object_results && object_results.detections) {
                 } else if (detectedGestureName === 'Victory') {
                     textToSpeak = 'うんこで';
                 } else if (detectedGestureName === 'THREE') {
-                    textToSpeak = 'くさんごよー';
+                    textToSpeak = 'くさんご';
                 } else if (detectedGestureName === 'FOUR') {
                     textToSpeak = 'よー';
                 } else {
                     textToSpeak = name;
                 }
-            } else {
+            }
+            else if (name === 'microwave') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'あ';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'い';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = 'う';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = 'え';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+             else {
                 textToSpeak = name;
             }
 
