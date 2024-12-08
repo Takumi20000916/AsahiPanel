@@ -8,13 +8,13 @@ const initializeObjectDetector = async () => {
     const vision = await FilesetResolver.forVisionTasks("./wasm");
     objectDetector = await ObjectDetector.createFromOptions(vision, {
         baseOptions: {
-            modelAssetPath: './models/Panel.tflite', // 使用するモデルを指定
+            modelAssetPath: './models/hanyou.tflite', // 使用するモデルを指定
             delegate: "GPU"
         },
         scoreThreshold: 0.45,
         runningMode: runningMode
     });
-    console.log("Object detector initialized with model: Panel.tflite");
+    console.log("Object detector initialized with model: hanyou.tflite");
 
     // カメラを有効にする
     enableCam();

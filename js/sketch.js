@@ -125,7 +125,7 @@ function draw() {
         }
     }
 
-    // 物体検出結果の描画と読み上げ
+   // 物体検出結果の描画と読み上げ
 if (pointing && object_results && object_results.detections) {
     strokeWeight(2);
 
@@ -134,8 +134,20 @@ if (pointing && object_results && object_results.detections) {
         let name = detection.categories[0].categoryName;
         let score = detection.categories[0].score;
 
-        // 人差し指より上にある物体のみを描画
-        if (bb.originX < Pointing_x && bb.originX + bb.width > Pointing_x && bb.originY + bb.height < Pointing_y) {
+        // 人差し指の座標との距離を計算
+        let centerX = bb.originX + bb.width / 2;
+        let centerY = bb.originY + bb.height / 2;
+        let distance = dist(Pointing_x, Pointing_y, centerX, centerY);
+
+        // 条件: 人差し指の真上かつ距離が一定以内
+        let maxDistance = 200; // 距離の閾値（ピクセル単位、必要に応じて調整）
+
+        if (
+            bb.originX < Pointing_x &&
+            bb.originX + bb.width > Pointing_x &&
+            bb.originY + bb.height < Pointing_y &&
+            distance <= maxDistance
+        ) {
             stroke(250, 230, 140);
             noFill();
             rect(bb.originX, bb.originY, bb.width, bb.height);
@@ -399,12 +411,13 @@ if (pointing && object_results && object_results.detections) {
                 lastSpeakTime = currentTime;
             }
 
-            break;
+            break; // 条件に合致する最初の物体のみ処理
         }
     }
 } else {
     lastSpokenName = null; // 指を指していない場合はリセット
 }
+
 
 
     // **ここから追加**
