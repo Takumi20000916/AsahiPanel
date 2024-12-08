@@ -11,7 +11,7 @@ const initializeObjectDetector = async () => {
             modelAssetPath: './models/Panel.tflite', // 使用するモデルを指定
             delegate: "GPU"
         },
-        scoreThreshold: 0.35,
+        scoreThreshold: 0.45,
         runningMode: runningMode
     });
     console.log("Object detector initialized with model: Panel.tflite");
@@ -53,7 +53,7 @@ async function enableCam(event) {
             width: { max: 1280 },
             height: { max: 720 },
             aspectRatio: { ideal: 1.0 },
-            frameRate: { ideal: 3, max: 3 } // フレームレートを最大3fpsに制限
+            frameRate: { ideal: 5, max: 5 } // フレームレートを最大3fpsに制限
         }
     };
 
@@ -168,7 +168,7 @@ function changedCamera() {
             width: { max: 1280 },
             height: { max: 720 },
             aspectRatio: { ideal: 1.0 },
-            frameRate: { ideal: 3, max: 3 } // フレームレートを最大3fpsに制限
+            frameRate: { ideal: 5, max: 5 } // フレームレートを最大3fpsに制限
         }
     };
 

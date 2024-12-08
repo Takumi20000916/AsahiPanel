@@ -18,7 +18,7 @@ let isSpeaking = false; // 音声読み上げ中かどうかを示すフラグ
 let hasStarted = false; // 音声読み上げが初めてのクリック時に開始されたかどうかを示すフラグ
 let lastSpokenName = null; // 最後に読み上げた物体名
 let lastSpeakTime = 0; // 最後に読み上げた時間
-let SPEAK_INTERVAL = 1000; // 音声読み上げの間隔（ミリ秒）
+let SPEAK_INTERVAL = 1200; // 音声読み上げの間隔（ミリ秒）
 
 function speakText(text) {
     if (!isSpeaking) {
@@ -150,33 +150,228 @@ if (pointing && object_results && object_results.detections) {
             let currentTime = millis();
             let textToSpeak = null;
 
-            if (name === 'bottle') {
+            if (name === '1-ryokucha') {
                 if (detectedGestureName === 'Pointing_Up') {
-                    textToSpeak = 'ゆい';
+                    textToSpeak = 'お茶';
                 } else if (detectedGestureName === 'Victory') {
-                    textToSpeak = 'うんこで';
+                    textToSpeak = '緑茶';
                 } else if (detectedGestureName === 'THREE') {
-                    textToSpeak = 'くさんご';
+                    textToSpeak = '冷たい';
                 } else if (detectedGestureName === 'FOUR') {
-                    textToSpeak = 'よー';
+                    textToSpeak = '缶';
                 } else {
                     textToSpeak = name;
                 }
             }
-            else if (name === 'microwave') {
+            else if (name === '2-H2O') {
                 if (detectedGestureName === 'Pointing_Up') {
-                    textToSpeak = 'あ';
+                    textToSpeak = 'ジュース';
                 } else if (detectedGestureName === 'Victory') {
-                    textToSpeak = 'い';
+                    textToSpeak = 'スポーツドリンク';
                 } else if (detectedGestureName === 'THREE') {
-                    textToSpeak = 'う';
+                    textToSpeak = '冷たい';
                 } else if (detectedGestureName === 'FOUR') {
-                    textToSpeak = 'え';
+                    textToSpeak = 'ペットボトル';
                 } else {
                     textToSpeak = name;
                 }
             }
-             else {
+            else if (name === '3-pocari') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'ジュース';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'スポーツドリンク';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = 'ペットボトル';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '4-Lemon') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = '炭酸';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'Lemon';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = 'ペットボトル';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '6-cider') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = '炭酸';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'サイダー';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '7-tea') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = '紅茶';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'ストレートティー';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = 'ペットボトル';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '8-grape') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'ジュース';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'ぶどう';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = 'ペットボトル';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '9-orange') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = '炭酸';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'オレンジ';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '10-Dodekamin') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = '炭酸';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'エナジードリンク';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '11-cold_black') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'コーヒー';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'ブラック';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '12-caff_Ore') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'コーヒー';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'カフェオレ';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '13-sugar') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'コーヒー';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = '微糖';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '14-Shin_black') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'コーヒー';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'ブラック';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '15-Red_black') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'コーヒー';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'ブラック';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = 'ホット';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '16-hot_black') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'コーヒー';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'ブラック';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = 'ホット';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '17-conepotage') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'フード';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'コーンんポタージュ';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = 'ホット';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '18-Oshiruko') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = 'フード';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'おしるこ';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = 'ホット';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else {
                 textToSpeak = name;
             }
 
