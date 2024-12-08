@@ -18,7 +18,7 @@ let isSpeaking = false; // 音声読み上げ中かどうかを示すフラグ
 let hasStarted = false; // 音声読み上げが初めてのクリック時に開始されたかどうかを示すフラグ
 let lastSpokenName = null; // 最後に読み上げた物体名
 let lastSpeakTime = 0; // 最後に読み上げた時間
-let SPEAK_INTERVAL = 1200; // 音声読み上げの間隔（ミリ秒）
+let SPEAK_INTERVAL = 1500; // 音声読み上げの間隔（ミリ秒）
 
 function speakText(text) {
     if (!isSpeaking) {
@@ -158,7 +158,7 @@ if (pointing && object_results && object_results.detections) {
                 } else if (detectedGestureName === 'THREE') {
                     textToSpeak = '冷たい';
                 } else if (detectedGestureName === 'FOUR') {
-                    textToSpeak = '缶';
+                    textToSpeak = 'ペットボトル';
                 } else {
                     textToSpeak = name;
                 }
@@ -198,6 +198,19 @@ if (pointing && object_results && object_results.detections) {
                     textToSpeak = '冷たい';
                 } else if (detectedGestureName === 'FOUR') {
                     textToSpeak = 'ペットボトル';
+                } else {
+                    textToSpeak = name;
+                }
+            }
+            else if (name === '5-Calpis') {
+                if (detectedGestureName === 'Pointing_Up') {
+                    textToSpeak = '炭酸';
+                } else if (detectedGestureName === 'Victory') {
+                    textToSpeak = 'カルピス';
+                } else if (detectedGestureName === 'THREE') {
+                    textToSpeak = '冷たい';
+                } else if (detectedGestureName === 'FOUR') {
+                    textToSpeak = '缶';
                 } else {
                     textToSpeak = name;
                 }
