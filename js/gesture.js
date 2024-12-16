@@ -16,7 +16,7 @@ const createGestureRecognizer = async () => {
     gestureRecognizer = await GestureRecognizer.createFromOptions(vision, {
         baseOptions: {
             modelAssetPath:
-                "https://raw.githubusercontent.com/Takumi20000916/PVTF2_URL/f1429dfe17a6a912024fd0a82d6d4103e736251c/PVTF2.task",
+                "https://raw.githubusercontent.com/Takumi20000916/PVTF3_URL/903ddd71c30902c3974de3daa4a50604c5645652/PVTF3.task",
             delegate: "GPU"
         },
         runningMode: runningMode,
@@ -24,7 +24,9 @@ const createGestureRecognizer = async () => {
     });
 
     //https://raw.githubusercontent.com/Takumi20000916/PVTF_URL/a2e2a46a24d9abe67a5bd4bd13a2925e30239d6a/PVTF.task
-    //https://github.com/Takumi20000916/PVTF2_URL/raw/f1429dfe17a6a912024fd0a82d6d4103e736251c/PVTF2.task
+    //https://raw.githubusercontent.com/Takumi20000916/PVTF2_URL/f1429dfe17a6a912024fd0a82d6d4103e736251c/PVTF2.task
+    //https://raw.githubusercontent.com/Takumi20000916/PVTF3_URL/903ddd71c30902c3974de3daa4a50604c5645652/PVTF3.task
+    
     
     //document.getElementById("message").innerHTML += "done";
 
